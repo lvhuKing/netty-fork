@@ -39,7 +39,6 @@ public class Client {
                 .channel(NioSocketChannel.class)
                 // 通道处理者
                 .handler(clientChannelInitializer)
-                // 心跳保活
                 .option(ChannelOption.SO_KEEPALIVE, true);
         return bootstrap;
     }

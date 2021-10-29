@@ -26,7 +26,7 @@ public class TestOneClient {
             // 读取数据，存到缓存区
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             char[] ch = new char[65536];
-            int len = -1;
+            int len;
             while((len = br.read(ch)) != -1){
                 String result = new String(ch, 0, len);
                 System.out.println("返回输出数据:" + result);

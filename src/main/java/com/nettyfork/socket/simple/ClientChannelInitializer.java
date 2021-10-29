@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 客户端
@@ -27,7 +26,7 @@ public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> 
 
     @Override
     protected void initChannel(SocketChannel ch) {
-        ch.pipeline().addLast(new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS))
+        ch.pipeline().addLast(new IdleStateHandler(10, 0, 0))
                 .addLast(new LineBasedFrameDecoder(Integer.MAX_VALUE))
                 .addLast(new StringDecoder(CharsetUtil.UTF_8))
                 .addLast(new StringEncoder(CharsetUtil.UTF_8))

@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.concurrent.TimeUnit;
 
 /**
  * ChannelInitializer 帮助我们配置Channel
@@ -33,8 +32,8 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
         }
         ChannelPipeline pipeline = socketChannel.pipeline();
         // IdleStateHandler心跳机制，如果超时触发Handler中userEventTriggered方法
-        pipeline.addLast(new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS))
-                //
+        pipeline.addLast(new IdleStateHandler(10, 0, 0))
+                // 识别接收消息中的“\n”或“\r\n”，保证消息的完整性，避免TCP粘包拆包问题
                 .addLast(new LineBasedFrameDecoder(Integer.MAX_VALUE))
                 // 字符串解码编码器
                 .addLast(new StringDecoder(CharsetUtil.UTF_8))

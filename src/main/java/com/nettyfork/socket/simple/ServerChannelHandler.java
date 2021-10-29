@@ -81,7 +81,7 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         log.warn("服务端异常" + cause.getMessage());
-        ctx.channel().writeAndFlush("服务端异常：" + cause.getMessage()).sync();
+        ctx.channel().writeAndFlush("服务端异常：" + cause.getMessage() + "\n").sync();
         ctx.close();
     }
 }

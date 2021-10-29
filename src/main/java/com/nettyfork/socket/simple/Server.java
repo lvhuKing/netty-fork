@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 参考： https://blog.csdn.net/qmqm011/article/details/100156010/
  * 服务端启动类
  * @author ccl
  * @date 2021/10/26 10:16
@@ -37,7 +36,7 @@ public class Server {
     private final EventLoopGroup workerGroup = new NioEventLoopGroup();
     private Channel channel;
 
-    public void start(){
+    public ChannelFuture start(){
         ChannelFuture channelFuture = null;
         try {
             // 服务端启动类
@@ -50,27 +49,21 @@ public class Server {
                     .childHandler(serverChannelInitializer)
                     // 设置通道连接的TCP参数：请求队列最大值
                     .option(ChannelOption.SO_BACKLOG, 1024)
-                    // 使消息立即发出，不用等到一定的数据量再发出去
-                    .option(ChannelOption.TCP_NODELAY, true)
                     // 保持长连接状态，心跳保活（默认2小时发一次心跳）
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             // 绑定端口、开启监听、同步等待
             channelFuture = serverBootstrap.bind(port).sync();
             if(channelFuture.isSuccess()){
+                channel = channelFuture.channel();
                 log.info("Netty启动成功，监听端口：" + port);
             }else{
                 log.info("Netty启动失败，监听端口：" + port);
             }
-            // 等待服务端监听端口关闭
-//            channelFuture.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Netty启动异常，监听端口：" + port);
-        } finally {
-            // 退出，关闭线程资源
-//            workerGroup.shutdownGracefully();
-//            bossGroup.shutdownGracefully();
         }
+        return channelFuture;
     }
 
     /**
