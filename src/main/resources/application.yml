@@ -1,0 +1,9 @@
+server:
+  port: 2021
+socket:
+  simple:
+    host: 127.0.0.1
+    port: 10001
+  complex:
+    host: 127.0.0.1
+    port: 10002
